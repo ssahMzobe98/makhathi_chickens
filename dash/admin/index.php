@@ -34,7 +34,7 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
     <title><?php echo $cur_user_row['name_surname'];?></title>
     <link rel="icon" href="../../img/loginDisplay-removebg-preview.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -424,7 +424,10 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
     .padding-10{
         padding: 10px 10px;
     }
-    .padding-10{
+    .w-100{
+        width:100%;
+    }
+    .padding-5{
         padding: 5px 5px;
     }
     .productInput{
@@ -578,6 +581,12 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                     </a>
                 </li>
                 <li>
+                    <a onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/financialStatement.php")'>
+                        <i class='bx bx-pie-chart-alt-2' ></i>
+                        <span class="links_name">Transactions</span>
+                    </a>
+                </li>
+                <li>
                     <a onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/ordersForm.php")'>
                         <i class='bx bx-pie-chart-alt-2' ></i>
                         <span class="links_name">Orders</span>
@@ -647,9 +656,9 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                                 <option value="Female">Female</option>
                             </select>
                         </div>
-                        <div class="inputVals">
+                        <!-- <div class="inputVals">
                             <input type="date" required class="userDOB" placeholder="date of birth">
-                        </div>
+                        </div> -->
                         <div class="inputVals">
                             <input type="number" required class="userPhoneNo" placeholder="User Phone No.">
                         </div>
@@ -663,10 +672,10 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                         <br>
                         <div class="inputVals">
                             <center>
-                                <span style="padding:10px 10px;border:1px solid #ddd;" class="addMasomaneNewSchool" onclick="maSomaneAddNewSchool()"> Create New User <span style="padding:2px 2px;"><i style="padding:10px 10px;color:green;" class="fa fa-plus"></i></span></span>
+                                <span style="padding:10px 10px;border:1px solid #ddd;" class="addNewUser" onclick="addNewUser()"> Create New User <span style="padding:2px 2px;"><i style="padding:10px 10px;color:green;" class="fa fa-plus"></i></span></span>
                             </center>
                         </div>
-                        <div class="errorLogMasoManeAddSchool" hidden></div>
+                        <div class="errorAddNewUser" hidden></div>
 
                     </div>
                     <div class="modal-footer">
@@ -701,56 +710,16 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
             </div>
         </div>
         <div class="modal" id="addNetchatsaSubjects">
-            <style>
-                input.errorLogMasoManeAddNetchatsaSubject{
-                    width: 100%;
-                    border:none;
-                    border-radius: 100px;
-                    background:none;
-                    border-top: 2px solid rebeccapurple;
-                    border-bottom: 2px solid mediumvioletred;
-                    color:rebeccapurple;
-                }
-                input.errorLogMasoManeAddNetchatsaSubject:hover{
-                    border-bottom: 2px solid rebeccapurple;
-                    border-top: 2px solid mediumvioletred;
-                    color:mediumvioletred;
-                }
-
-            </style>
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" style="text-align: center;">Add Netchatsa Subject</h4>
                         <button type="button" style="color: white;" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="inputVals">
-                            <input type="text" required class="SubjectNameNetchatsa" placeholder="Enter Principal Name">
-                        </div>
-                        <div class="inputVals">
-                            <select class="gradeNetchatsa">
-                                <option value=""> -- Select Grade -- </option>
-                                <option value="Gr12">Grade 12</option>
-                                <option value="Gr11">Grade 11</option>
-                                <option value="Gr10">Grade 10</option>
-                                <option value="Gr9">Grade 9</option>
-                                <option value="Gr8">Grade 8</option>
-                            </select>
-                        </div>
-
-                        <br>
-                        <div class="inputVals">
-
-                            <input type="submit" class="MasoManeAddNetchatsaSubject" onclick="MasoManeAddNetchatsaSubject()" value="Add new netchatsa subject" >
-                        </div>
-                        <div class="errorLogMasoManeAddNetchatsaSubjectError" hidden></div>
-
-                    </div>
+                    <div class="modal-body"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -764,10 +733,9 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
             // }else
             //   sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
             // }
-            let globalUserId="";
+            
             $(document).ready(function(){
                 $("#dataTable").DataTable();
-                globalUserId = '<?php echo $cur_user_row['id'];?>';
                 loadAfterQuery(".makhanyile","../../src/forms/admin/ordersForm.php");
             });
             function loadAfterQuery(rclass,dir){
@@ -775,6 +743,59 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
             }
             function openOrderDetails(orderUid){
                 domeSquareModal("orderDetails",orderUid)
+            }
+            function addNewUser(){
+                var fname = $(".fname").val();
+                var lname = $(".lname").val();
+                var userPhoneNo = $(".userPhoneNo").val();
+                var userEmailAddress = $(".userEmailAddress").val();
+                var userPassword = $(".userPassword").val();
+                var gender = $(".gender").val();
+                $(".errorAddNewUser").removeAttr("hidden").attr("style","color:red;border:1px solid red;background:white;").html("<div><img src='../../img/loader.gif' style='width:5%;border-radius: 20px;'> Processing...</div>");
+                if(fname ===""){
+                    $(".fname").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(lname ===""){
+                    $(".lname").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(userPhoneNo ===""){
+                    $(".userPhoneNo").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(userEmailAddress ===""){
+                    $(".userEmailAddress").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(userPassword ===""){
+                    $(".userPassword").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(gender ===""){
+                    $(".gender").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else{
+                    fname = fname+" "+lname;
+                    const url="../../routes/adminRequests.php";
+                    $.ajax({
+                        url:url,
+                        type:'post',
+                        data:{fname:fname,userPhoneNo:userPhoneNo,userEmailAddress:userEmailAddress,userPassword:userPassword,gender:gender},
+                        beforeSend:function(){
+                            $(".showlargeModal").html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
+                        },
+                        success:function(e){
+                            if(e.length==1){
+                                $(".displayResponse").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Product list added!!");
+                            }
+                            else{
+                                $(".displayResponse").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(e);
+                            }
+                        }
+                    });
+                }
             }
             function addNewProduct(){
                 const fileAddProduct = document.getElementById('fileAddProduct').files;

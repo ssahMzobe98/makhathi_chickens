@@ -24,21 +24,6 @@ class LoginProcessor extends CleanData
     {
         return $this->login2App($emailLogin,$passLogin,$dash);
     }
-    public function isAccountEmailSet(?string $email):Response{
-        $response = new Response();
-        $sql = "select email from makhathi_chickens_users where email=? limit 1";
-        $return = $this->connect->numRows($sql,'s',[$email])??0;
-        $response=$response->failureSetter()
-                                            ->messagerSetter("Account With this email already exists!.")
-                                            ->messagerArraySetter();
-        if($return==1){
-            $response=$response->successSetter()
-                ->messagerSetter("Account ready to be created")
-                ->messagerArraySetter();
-        }
-        return $response;
-
-    }
     public function createNewUserFromApp(string $email="", string $pass="", string $name="", string $phone="",string $user_type='app'):Response
     {
         $response = $this->isAccountEmailSet($email);

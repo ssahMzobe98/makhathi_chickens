@@ -37,6 +37,21 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 		}
 		
 	}
+	elseif(isset($_POST['fname'],$_POST['userPhoneNo'],$_POST['userEmailAddress'],$_POST['userPassword'],$_POST['gender'])){
+		$fname = $processorCleanData->cleanDataSet($_POST['fname']);
+		$userPhoneNo = $processorCleanData->cleanDataSet($_POST['userPhoneNo']);
+		$userEmailAddress = $processorCleanData->cleanDataSet($_POST['userEmailAddress']);
+		$userPassword = $processorCleanData->cleanDataSet($_POST['userPassword']);
+		$gender = $processorCleanData->cleanDataSet($_POST['gender']);
+		$response = $userDao->createNewAdminUser($fname,$userPhoneNo,$userEmailAddress,$userPassword,$gender,$cur_user_row['id']);
+		if($response===StatusConstants::SUCCESS_STATUS){
+			$e=1;
+		}
+		else{
+			$e=$response->responseMessage;
+		}
+	}
+
 	echo json_encode($e);
 }
 else{
