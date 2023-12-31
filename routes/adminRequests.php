@@ -6,11 +6,11 @@ use Src\constants\StatusConstants;
 use Classes\dao\userDao;
 use Classes\DBConnect\DBConnect;
 use Mmshightech\service\factory\daoFactory\DaoFactory;
+use Src\constants\DaoClassConstants;
 $processorCleanData=new LoginProcessor(null);
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }
-include_once "../../vendor/autoload.php";
 if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 	/** @var  userDao $userDao */
 	$userDao = DaoFactory::make(DaoClassConstants::USER_DAO,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
@@ -25,7 +25,7 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 			$productInstock=$processorCleanData->cleanDataSet($_POST['productInstock']);
 			$productDescription=$processorCleanData->cleanDataSet($_POST['productDescription']);
 			$response = $processorCleanData->createNewProduct($productTitle,$productProductType,$productSubTitle,$productSize,$productPrice,$productInstock,$productDescription,$cur_user_row['id']);
-			if($response===StatusConstants::SUCCESS_STATUS){
+			if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
 				$e=1;
 			}
 			else{
@@ -44,7 +44,7 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 		$userPassword = $processorCleanData->cleanDataSet($_POST['userPassword']);
 		$gender = $processorCleanData->cleanDataSet($_POST['gender']);
 		$response = $userDao->createNewAdminUser($fname,$userPhoneNo,$userEmailAddress,$userPassword,$gender,$cur_user_row['id']);
-		if($response===StatusConstants::SUCCESS_STATUS){
+		if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
 			$e=1;
 		}
 		else{

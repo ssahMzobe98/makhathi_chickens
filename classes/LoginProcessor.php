@@ -27,7 +27,7 @@ class LoginProcessor extends CleanData
     public function createNewUserFromApp(string $email="", string $pass="", string $name="", string $phone="",string $user_type='app'):Response
     {
         $response = $this->isAccountEmailSet($email);
-        if($response->responseStatus==StatusConstants::SUCCESS_STATUS){
+        if($response->responseStatus!==StatusConstants::SUCCESS_STATUS){
             return $response;
         }
         $pass = $this->lockPassWord($pass);
@@ -65,7 +65,7 @@ class LoginProcessor extends CleanData
         $sql="update verification_code set code=0 where code=?";
         return $this->connect->postDataSafely($sql,'s',[$verification_Code]);
     }
-    private function generateVerificationCode(?int $id,?string $email):Response
+    public function generateVerificationCode(?int $id,?string $email):Response
     {
         $rand1=rand(0,1);
         $code = rand(100,999);

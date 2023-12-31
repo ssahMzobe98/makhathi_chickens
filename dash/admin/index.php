@@ -744,6 +744,28 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
             function openOrderDetails(orderUid){
                 domeSquareModal("orderDetails",orderUid)
             }
+            function widthdraw(){
+                let WithDrawalReason = $(".WithDrawalReason").val();
+                let withdrawalAmount = $(".withdrawalAmount").val();
+                let withDrawer = $(".withDrawer").val();
+                $(".processing").removeAttr("hidden").attr("style","color:red;border:1px solid red;background:white;").html("<div><img src='../../img/loader.gif' style='width:15%;border-radius: 20px;'> Processing...</div>");
+                if(WithDrawalReason===""){
+                    $(".WithDrawalReason").attr("style","border:1px solid red;");
+                    $(".processing").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else if(withdrawalAmount===""){
+                    $(".withdrawalAmount").attr("style","border:1px solid red;");
+                    $(".processing").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else if(withDrawer===""){
+                    $(".withDrawer").attr("style","border:1px solid red;");
+                    $(".processing").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else{
+                    const response = getResponse(WithDrawalReason,withdrawalAmount,withDrawer,'widthdrawal');
+                    
+                }
+            }
             function addNewUser(){
                 var fname = $(".fname").val();
                 var lname = $(".lname").val();
@@ -784,14 +806,14 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                         type:'post',
                         data:{fname:fname,userPhoneNo:userPhoneNo,userEmailAddress:userEmailAddress,userPassword:userPassword,gender:gender},
                         beforeSend:function(){
-                            $(".showlargeModal").html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
+                            $(".errorAddNewUser").html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
                         },
                         success:function(e){
                             if(e.length==1){
-                                $(".displayResponse").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Product list added!!");
+                                $(".errorAddNewUser").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("New User added!!");
                             }
                             else{
-                                $(".displayResponse").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(e);
+                                $(".errorAddNewUser").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(e);
                             }
                         }
                     });

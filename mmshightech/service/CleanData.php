@@ -105,7 +105,7 @@ class CleanData implements ICleanData
         $response=$response->failureSetter()
                                             ->messagerSetter("Account With this email already exists!.")
                                             ->messagerArraySetter();
-        if($return==1){
+        if($return!==1){
             $response=$response->successSetter()
                 ->messagerSetter("Account ready to be created")
                 ->messagerArraySetter();
