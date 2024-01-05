@@ -67,7 +67,7 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
                     </div>
                 </div>
             </div>  
-            <div class="processing" hidden></div>  
+            <div class="processing1" hidden></div>  
         </div>
         <div class="w-50 rightSet padding-10">
             <div class="data">

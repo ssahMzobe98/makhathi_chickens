@@ -14,6 +14,7 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 	/** @var  userDao $userDao */
 	$userDao = DaoFactory::make(DaoClassConstants::USER_DAO,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
+	$transactionDao = DaoFactory::make(DaoClassConstants::TRANSACTION_DAO,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
 	$cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
 	if(isset($_POST['productTitle'],$_POST['productProductType'],$_POST['productSubTitle'],$_POST['productSize'],$_POST['productPrice'],$_POST['productInstock'],$_POST['productDescription'])){
 		if(isset($_FILES)){
@@ -44,6 +45,20 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 		$userPassword = $processorCleanData->cleanDataSet($_POST['userPassword']);
 		$gender = $processorCleanData->cleanDataSet($_POST['gender']);
 		$response = $userDao->createNewAdminUser($fname,$userPhoneNo,$userEmailAddress,$userPassword,$gender,$cur_user_row['id']);
+		if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
+			$e=1;
+		}
+		else{
+			$e=$response->responseMessage;
+		}
+	}
+	elseif(isset($_POST['transactReason'],$_POST['transactAmount'],$_POST['transactPerson'],$_POST['transactType'])){
+		$transactReason = $processorCleanData->cleanDataSet($_POST['transactReason']);
+		$transactAmount = $processorCleanData->cleanDataSet($_POST['transactAmount']);
+		$transactPerson = $processorCleanData->cleanDataSet($_POST['transactPerson']);
+		$transactType = $processorCleanData->cleanDataSet($_POST['transactType']);
+
+		$response = $transactionDao->MakeTransaction($transactReason,$transactAmount,$transactPerson,$transactType,$cur_user_row['id']);
 		if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
 			$e=1;
 		}

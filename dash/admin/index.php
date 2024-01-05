@@ -762,9 +762,59 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                     $(".processing").attr("style","border:1px solid red;color:red;").html("Missing Field!");
                 }
                 else{
-                    const response = getResponse(WithDrawalReason,withdrawalAmount,withDrawer,'widthdrawal');
-                    
+                    getResponse(WithDrawalReason,withdrawalAmount,withDrawer,'widthdrawal');
                 }
+            }
+            function deposit(){
+                let DepositReason = $(".DepositReason").val();
+                let DepositAmount = $(".DepositAmount").val();
+                let Depositer = $(".Depositer").val();
+                $(".processing1").removeAttr("hidden").attr("style","color:red;border:1px solid red;background:white;").html("<div><img src='../../img/loader.gif' style='width:15%;border-radius: 20px;'> Processing...</div>");
+                if(DepositReason===""){
+                    $(".DepositReason").attr("style","border:1px solid red;");
+                    $(".processing1").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else if(DepositAmount===""){
+                    $(".DepositAmount").attr("style","border:1px solid red;");
+                    $(".processing1").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else if(Depositer===""){
+                    $(".Depositer").attr("style","border:1px solid red;");
+                    $(".processing1").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else{
+                    getResponse(DepositReason,DepositAmount,Depositer,'deposit');
+                }
+            }
+            function getResponse(transactReason,transactAmount,transactPerson,transactType){
+                const url="../../routes/adminRequests.php";
+                let processing = (transactType==='deposit')?".processing1":".processing";
+                $.ajax({
+                    url:url,
+                    type:'post',
+                    data:{transactReason:transactReason,transactAmount:transactAmount,transactPerson:transactPerson,transactType:transactType},
+                    beforeSend:function(){
+                        $(processing).html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
+                    },
+                    success:function(e){
+                        if(e.length==1){
+                            $(processing).attr("style","padding:10px 10px;width:100%;color:green;").html(transactType+" success");
+                            if(transactType==='deposit'){
+                                $(".DepositReason").val('');
+                                $(".DepositAmount").val('');
+                                $(".Depositer").val('');
+                            }
+                            else{
+                                $(".WithDrawalReason").val('');
+                                $(".withdrawalAmount").val('');
+                                $(".withDrawer").val('');
+                            }
+                        }
+                        else{
+                            $(processing).attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(e);
+                        }
+                    }
+                });
             }
             function addNewUser(){
                 var fname = $(".fname").val();
