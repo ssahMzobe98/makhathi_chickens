@@ -14,30 +14,11 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 	/** @var  userDao $userDao */
 	$userDao = DaoFactory::make(DaoClassConstants::USER_DAO,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
+	$productDao = DaoFactory::make(DaoClassConstants::PRODUCTS,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
 	$transactionDao = DaoFactory::make(DaoClassConstants::TRANSACTION_DAO,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
+
 	$cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
-	if(isset($_POST['productTitle'],$_POST['productProductType'],$_POST['productSubTitle'],$_POST['productSize'],$_POST['productPrice'],$_POST['productInstock'],$_POST['productDescription'])){
-		if(isset($_FILES)){
-			$productTitle=$processorCleanData->cleanDataSet($_POST['productTitle']);
-			$productProductType=$processorCleanData->cleanDataSet($_POST['productProductType']);
-			$productSubTitle=$processorCleanData->cleanDataSet($_POST['productSubTitle']);
-			$productSize=$processorCleanData->cleanDataSet($_POST['productSize']);
-			$productPrice=$processorCleanData->cleanDataSet($_POST['productPrice']);
-			$productInstock=$processorCleanData->cleanDataSet($_POST['productInstock']);
-			$productDescription=$processorCleanData->cleanDataSet($_POST['productDescription']);
-			$response = $processorCleanData->createNewProduct($productTitle,$productProductType,$productSubTitle,$productSize,$productPrice,$productInstock,$productDescription,$cur_user_row['id']);
-			if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
-				$e=1;
-			}
-			else{
-				$e=$response->responseMessage;
-			}
-		}
-		else{
-			$e="Missing Product image file.";
-		}
-	}
-	elseif(isset($_POST['fname'],$_POST['userPhoneNo'],$_POST['userEmailAddress'],$_POST['userPassword'],$_POST['gender'])){
+	if(isset($_POST['fname'],$_POST['userPhoneNo'],$_POST['userEmailAddress'],$_POST['userPassword'],$_POST['gender'])){
 		$fname = $processorCleanData->cleanDataSet($_POST['fname']);
 		$userPhoneNo = $processorCleanData->cleanDataSet($_POST['userPhoneNo']);
 		$userEmailAddress = $processorCleanData->cleanDataSet($_POST['userEmailAddress']);
@@ -89,7 +70,7 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 		}
 	}
 	elseif(isset($_POST['productTitle'],$_POST['productProductType'],$_POST['productSubTitle'],$_POST['productSize'],$_POST['productPrice'],$_POST['productInstock'],$_POST['productDescription'])){
-		if(!isset($_FILES['fileAddProduct'])){
+		if(isset($_FILES['fileAddProduct'])){
 			$productTitle = $processorCleanData->cleanDataSet($_POST['productTitle']);
 			$productProductType = $processorCleanData->cleanDataSet($_POST['productProductType']);
 			$productSubTitle = $processorCleanData->cleanDataSet($_POST['productSubTitle']);
@@ -97,7 +78,28 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 			$productPrice = $processorCleanData->cleanDataSet($_POST['productPrice']);
 			$productInstock = $processorCleanData->cleanDataSet($_POST['productInstock']);
 			$productDescription = $processorCleanData->cleanDataSet($_POST['productDescription']);
-			
+			$ext = explode(".", $_FILES['fileAddProduct']['name']);
+			if(!in_array($ext[1], ['png','PNG','JPG','jpg','heit','HEIT'])){
+				$e= $ext[1]." Not supported. Only png,jpg,img format supported.";
+			}
+			else{
+				$dir="../img/";
+				$newName=rand(0,1000).'_'.$ext[0].".".$ext[1];
+				if(!move_uploaded_file($_FILES['fileAddProduct']['tmp_name'], $dir.$newName)){
+					$e='Failed to upload file due to network!, Please try again.';
+				}
+				else{
+					$response = $productDao->addNewProduct($productTitle,$productProductType,$productSubTitle,$productSize,$productPrice,$productInstock,$productDescription,$newName,$cur_user_row['id']);
+					if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
+						$e=1;
+					}
+					else{
+						$e=$response->responseMessage;
+					}
+				}
+			}
+
+
 		}
 		else{
 			$e="Thumbnail File required!";
