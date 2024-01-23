@@ -98,8 +98,6 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 					}
 				}
 			}
-
-
 		}
 		else{
 			$e="Thumbnail File required!";
