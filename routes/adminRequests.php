@@ -103,7 +103,11 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 			$e="Thumbnail File required!";
 		}
 	}
-
+	elseif(isset($_POST['logout'])){
+		unset($_SESSION['user_agent'],$_SESSION['var_agent']);
+		session_destroy();
+		$e=1;
+	}
 	echo json_encode($e);
 }
 else{
