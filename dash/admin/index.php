@@ -812,6 +812,19 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                     }
                 });
             }
+            function logout(){
+                logout = "logout";
+                const url="../../routes/adminRequests.php";
+                $.ajax({
+                    url:url,
+                    type:'post',
+                    data:{logout:logout},
+                    success:function(e){
+                        $('.links_name').html("Logging out....");
+                        window.location=("../");
+                    }
+                });
+            }
             function addNewUser(){
                 var fname = $(".fname").val();
                 var lname = $(".lname").val();
