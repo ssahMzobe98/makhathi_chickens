@@ -60,7 +60,7 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
             </div>
             <div class="padding-20 center-content" style="width: 33.3%;">
                 <label >
-                    Product state
+                    Product Instock
                 </label>
                 <input type="number" class="productInput productInstock" placeholder="Product Instock">
             </div>

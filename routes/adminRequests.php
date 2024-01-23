@@ -36,7 +36,6 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 		else{
 			$e="Missing Product image file.";
 		}
-		
 	}
 	elseif(isset($_POST['fname'],$_POST['userPhoneNo'],$_POST['userEmailAddress'],$_POST['userPassword'],$_POST['gender'])){
 		$fname = $processorCleanData->cleanDataSet($_POST['fname']);
@@ -57,13 +56,51 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 		$transactAmount = $processorCleanData->cleanDataSet($_POST['transactAmount']);
 		$transactPerson = $processorCleanData->cleanDataSet($_POST['transactPerson']);
 		$transactType = $processorCleanData->cleanDataSet($_POST['transactType']);
-
 		$response = $transactionDao->MakeTransaction($transactReason,$transactAmount,$transactPerson,$transactType,$cur_user_row['id']);
 		if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
 			$e=1;
 		}
 		else{
 			$e=$response->responseMessage;
+		}
+	}
+	elseif(isset($_POST['re_payment_payableAmount'], $_POST['re_payment_clientUserId'], $_POST['re_payment_Payment'])){
+		$re_payment_payableAmount = $processorCleanData->cleanDataSet($_POST['re_payment_payableAmount']);
+		$re_payment_clientUserId = $processorCleanData->cleanDataSet($_POST['re_payment_clientUserId']);
+		$re_payment_Payment = $processorCleanData->cleanDataSet($_POST['re_payment_Payment']);
+		$response = $transactionDao->MakeCreditPaymentTransaction($re_payment_payableAmount,$re_payment_clientUserId,$re_payment_Payment,$cur_user_row['id']);
+		if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
+			$e=1;
+		}
+		else{
+			$e=$response->responseMessage;
+		}
+	}
+	elseif(isset($_POST['requestAmount'],$_POST['maxAmount'],$_POST['clientUserId'])){
+		$requestAmount = $processorCleanData->cleanDataSet($_POST['requestAmount']);
+		$maxAmount = $processorCleanData->cleanDataSet($_POST['maxAmount']);
+		$clientUserId = $processorCleanData->cleanDataSet($_POST['clientUserId']);
+		$response = $transactionDao->MakeCreditTransaction($requestAmount,$maxAmount,$clientUserId,$cur_user_row['id']);
+		if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
+			$e=1;
+		}
+		else{
+			$e=$response->responseMessage;
+		}
+	}
+	elseif(isset($_POST['productTitle'],$_POST['productProductType'],$_POST['productSubTitle'],$_POST['productSize'],$_POST['productPrice'],$_POST['productInstock'],$_POST['productDescription'])){
+		if(!isset($_FILES['fileAddProduct'])){
+			$productTitle = $processorCleanData->cleanDataSet($_POST['productTitle']);
+			$productProductType = $processorCleanData->cleanDataSet($_POST['productProductType']);
+			$productSubTitle = $processorCleanData->cleanDataSet($_POST['productSubTitle']);
+			$productSize = $processorCleanData->cleanDataSet($_POST['productSize']);
+			$productPrice = $processorCleanData->cleanDataSet($_POST['productPrice']);
+			$productInstock = $processorCleanData->cleanDataSet($_POST['productInstock']);
+			$productDescription = $processorCleanData->cleanDataSet($_POST['productDescription']);
+			
+		}
+		else{
+			$e="Thumbnail File required!";
 		}
 	}
 

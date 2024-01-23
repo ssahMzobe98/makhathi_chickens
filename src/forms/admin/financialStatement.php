@@ -4,6 +4,7 @@ use Classes\dao\userDao;
 use Classes\DBConnect\DBConnect;
 use Mmshightech\service\factory\daoFactory\DaoFactory;
 use Src\constants\DaoClassConstants;
+use Src\constants\Flags;
 
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
@@ -12,8 +13,11 @@ include_once "../../../vendor/autoload.php";
 if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
     /** @var  userDao $userDao */
     $userDao = DaoFactory::make(DaoClassConstants::USER_DAO,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
+    $transactionDao = DaoFactory::make(DaoClassConstants::TRANSACTION_DAO,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
+
     $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
     $allUserUidsAndNames=$userDao->getUserUidsAndNames($cur_user_row['id']);
+    $Total=$transactionDao->getTotalAmountOfTransaction(Flags::TRANSACTION_TYPE_DEPOSIT,Flags::TRANSACTION_TYPE_WITHDRAW);
     ?>
     <style>
         .data{
@@ -24,7 +28,6 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
         .productInput{
             border:1px solid #dddddd;
             border-radius: 20px;
-
         }
         .spanBtn{
             background: navy;
@@ -36,43 +39,47 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
             background: #dddddd;
             color:navy;
         }
+        
     </style>
     <div class="flex padding-10 w-100">
         <div class="w-50 leftSet padding-10">
             <div class="data">
-                <div class="padding-10 ">
-                    <center><h5>Deposits</h5></center>
-                </div>
-            </div>
-            <div class="padding-5 w-100">
-                <div class="input-vals w-100 padding-5">
-                    <textarea placeholder="Reason to deposit.." class="productInput DepositReason padding-10 w-100" style="width:100%;"></textarea>
-                </div>
-                <div class="flex">
-                    <div class="input-vals w-100 padding-5">
-                        <input type="text" placeholder="Amount to Deposit" class="productInput DepositAmount padding-10 w-100" style="width:100%;"/>
+                    <div class="padding-10 ">
+                        <center><h5>Deposits (+R<?php echo number_format($Total[Flags::TRANSACTION_TYPE_DEPOSIT],2);?>)</h5></center>
                     </div>
-                    <div class="input-vals w-100 padding-5">
-                        <select class="productInput Depositer padding-10 w-100" style="width:100%;">
-                            <option value="">-- Select Depositer</option>
-                            <?php
-                                foreach ($allUserUidsAndNames as $arr) {
-                                    echo '<option value="'.$arr['user_id'].'">'.$arr['name'].'</option>';  
-                                }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="input-vals w-50 padding-5">
-                        <span class="padding-10 w-100 spanBtn" onclick="deposit()">Deposit</span>
-                    </div>
+                
+                    <div class="padding-5 w-100">
+                        <div class="input-vals w-100 padding-5">
+                            <textarea placeholder="Reason to deposit.." class="productInput DepositReason padding-10 w-100" style="width:100%;"></textarea>
+                        </div>
+                        <div class="flex">
+                            <div class="input-vals w-100 padding-5">
+                                <input type="text" placeholder="Amount to Deposit" class="productInput DepositAmount padding-10 w-100" style="width:100%;"/>
+                            </div>
+                            <div class="input-vals w-100 padding-5">
+                                <select class="productInput Depositer padding-10 w-100" style="width:100%;">
+                                    <option value="">-- Select Depositer</option>
+                                    <?php
+                                        foreach ($allUserUidsAndNames as $arr) {
+                                            echo '<option value="'.$arr['user_id'].'">'.$arr['name'].'</option>';  
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="input-vals w-50 padding-5">
+                                <span class="padding-10 w-100 spanBtn" onclick="deposit()">Deposit</span>
+                            </div>
+                        </div>
+                    </div> 
                 </div>
-            </div>  
-            <div class="processing1" hidden></div>  
+
+            <div class="processing1" hidden></div> 
+            <div class="padding-10 w-100 classCallerDeposit"></div> 
         </div>
         <div class="w-50 rightSet padding-10">
             <div class="data">
                 <div class="padding-10">
-                    <center><h5>Withdrawals</h5></center>
+                    <center><h5>Withdrawals (-R<?php echo number_format($Total[Flags::TRANSACTION_TYPE_WITHDRAW],2);?>)</h5></center>
                 </div>
                 <div class="padding-5 w-100">
                     <div class="input-vals w-100 padding-5">
@@ -99,9 +106,14 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
                 </div>
             </div>
             <div class="processing" hidden></div>
+            <div class="padding-10 w-100 classCallerwithDraw"></div>
             
         </div>
     </div>
+    <script>
+        loadAfterQuery(".classCallerDeposit","../../src/forms/admin/transactionHistory.php?query=deposit");
+        loadAfterQuery(".classCallerwithDraw","../../src/forms/admin/transactionHistory.php?query=withdraw");
+    </script>
     <?php
 }
 else{
