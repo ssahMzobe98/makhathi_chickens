@@ -24,25 +24,10 @@ class LoginProcessor extends CleanData
     {
         return $this->login2App($emailLogin,$passLogin,$dash);
     }
-    public function isAccountEmailSet(?string $email):Response{
-        $response = new Response();
-        $sql = "select email from makhathi_chickens_users where email=? limit 1";
-        $return = $this->connect->numRows($sql,'s',[$email])??0;
-        $response=$response->failureSetter()
-                                            ->messagerSetter("Account With this email already exists!.")
-                                            ->messagerArraySetter();
-        if($return==1){
-            $response=$response->successSetter()
-                ->messagerSetter("Account ready to be created")
-                ->messagerArraySetter();
-        }
-        return $response;
-
-    }
     public function createNewUserFromApp(string $email="", string $pass="", string $name="", string $phone="",string $user_type='app'):Response
     {
         $response = $this->isAccountEmailSet($email);
-        if($response->responseStatus==StatusConstants::SUCCESS_STATUS){
+        if($response->responseStatus!==StatusConstants::SUCCESS_STATUS){
             return $response;
         }
         $pass = $this->lockPassWord($pass);
@@ -80,7 +65,7 @@ class LoginProcessor extends CleanData
         $sql="update verification_code set code=0 where code=?";
         return $this->connect->postDataSafely($sql,'s',[$verification_Code]);
     }
-    private function generateVerificationCode(?int $id,?string $email):Response
+    public function generateVerificationCode(?int $id,?string $email):Response
     {
         $rand1=rand(0,1);
         $code = rand(100,999);

@@ -1,6 +1,7 @@
 <?php
 
 namespace Mmshightech\interfaceLet;
+use Classes\response\Response;
 
 interface ICleanData
 {
@@ -12,4 +13,5 @@ interface ICleanData
     public function verifyClientMenuStore(array $cleanData=[]);
     public function userInfo(string $agent=null);
     public function updateDomeBackground(int $dome=0,int $id=0);
+    public function isAccountEmailSet(?string $email):Response;
 }

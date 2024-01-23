@@ -34,7 +34,7 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
     <title><?php echo $cur_user_row['name_surname'];?></title>
     <link rel="icon" href="../../img/loginDisplay-removebg-preview.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -289,7 +289,7 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
         overflow-wrap: break-word;
         word-wrap: break-word;
         hyphens: auto;
-        height: 85vh;
+        height: 82vh;
 
     }
     .home-content .masomane .makhanyile::-webkit-scrollbar{
@@ -424,7 +424,10 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
     .padding-10{
         padding: 10px 10px;
     }
-    .padding-10{
+    .w-100{
+        width:100%;
+    }
+    .padding-5{
         padding: 5px 5px;
     }
     .productInput{
@@ -578,6 +581,12 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                     </a>
                 </li>
                 <li>
+                    <a onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/financialStatement.php")'>
+                        <i class='bx bx-pie-chart-alt-2' ></i>
+                        <span class="links_name">Transactions</span>
+                    </a>
+                </li>
+                <li>
                     <a onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/ordersForm.php")'>
                         <i class='bx bx-pie-chart-alt-2' ></i>
                         <span class="links_name">Orders</span>
@@ -647,9 +656,9 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                                 <option value="Female">Female</option>
                             </select>
                         </div>
-                        <div class="inputVals">
+                        <!-- <div class="inputVals">
                             <input type="date" required class="userDOB" placeholder="date of birth">
-                        </div>
+                        </div> -->
                         <div class="inputVals">
                             <input type="number" required class="userPhoneNo" placeholder="User Phone No.">
                         </div>
@@ -663,10 +672,10 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                         <br>
                         <div class="inputVals">
                             <center>
-                                <span style="padding:10px 10px;border:1px solid #ddd;" class="addMasomaneNewSchool" onclick="maSomaneAddNewSchool()"> Create New User <span style="padding:2px 2px;"><i style="padding:10px 10px;color:green;" class="fa fa-plus"></i></span></span>
+                                <span style="padding:10px 10px;border:1px solid #ddd;" class="addNewUser" onclick="addNewUser()"> Create New User <span style="padding:2px 2px;"><i style="padding:10px 10px;color:green;" class="fa fa-plus"></i></span></span>
                             </center>
                         </div>
-                        <div class="errorLogMasoManeAddSchool" hidden></div>
+                        <div class="errorAddNewUser" hidden></div>
 
                     </div>
                     <div class="modal-footer">
@@ -701,73 +710,22 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
             </div>
         </div>
         <div class="modal" id="addNetchatsaSubjects">
-            <style>
-                input.errorLogMasoManeAddNetchatsaSubject{
-                    width: 100%;
-                    border:none;
-                    border-radius: 100px;
-                    background:none;
-                    border-top: 2px solid rebeccapurple;
-                    border-bottom: 2px solid mediumvioletred;
-                    color:rebeccapurple;
-                }
-                input.errorLogMasoManeAddNetchatsaSubject:hover{
-                    border-bottom: 2px solid rebeccapurple;
-                    border-top: 2px solid mediumvioletred;
-                    color:mediumvioletred;
-                }
-
-            </style>
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" style="text-align: center;">Add Netchatsa Subject</h4>
                         <button type="button" style="color: white;" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="inputVals">
-                            <input type="text" required class="SubjectNameNetchatsa" placeholder="Enter Principal Name">
-                        </div>
-                        <div class="inputVals">
-                            <select class="gradeNetchatsa">
-                                <option value=""> -- Select Grade -- </option>
-                                <option value="Gr12">Grade 12</option>
-                                <option value="Gr11">Grade 11</option>
-                                <option value="Gr10">Grade 10</option>
-                                <option value="Gr9">Grade 9</option>
-                                <option value="Gr8">Grade 8</option>
-                            </select>
-                        </div>
-
-                        <br>
-                        <div class="inputVals">
-
-                            <input type="submit" class="MasoManeAddNetchatsaSubject" onclick="MasoManeAddNetchatsaSubject()" value="Add new netchatsa subject" >
-                        </div>
-                        <div class="errorLogMasoManeAddNetchatsaSubjectError" hidden></div>
-
-                    </div>
+                    <div class="modal-body"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     </div>
-
                 </div>
             </div>
         </div>
         <script>
-            // let sidebar = document.querySelector(".sidebar");
-            // let sidebarBtn = document.querySelector(".sidebarBtn");
-            // sidebarBtn.onclick = function() {
-            //   sidebar.classList.toggle("active");
-            //   if(sidebar.classList.contains("active")){
-            //   sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
-            // }else
-            //   sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
-            // }
-            let globalUserId="";
             $(document).ready(function(){
                 $("#dataTable").DataTable();
-                globalUserId = '<?php echo $cur_user_row['id'];?>';
                 loadAfterQuery(".makhanyile","../../src/forms/admin/ordersForm.php");
             });
             function loadAfterQuery(rclass,dir){
@@ -775,6 +733,137 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
             }
             function openOrderDetails(orderUid){
                 domeSquareModal("orderDetails",orderUid)
+            }
+            function openUserOnCredit(userId){
+                domeSquareModal("userCreditDetails",userId)
+            }
+            function widthdraw(){
+                let WithDrawalReason = $(".WithDrawalReason").val();
+                let withdrawalAmount = $(".withdrawalAmount").val();
+                let withDrawer = $(".withDrawer").val();
+                $(".processing").removeAttr("hidden").attr("style","color:red;border:1px solid red;background:white;").html("<div><img src='../../img/loader.gif' style='width:15%;border-radius: 20px;'> Processing...</div>");
+                if(WithDrawalReason===""){
+                    $(".WithDrawalReason").attr("style","border:1px solid red;");
+                    $(".processing").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else if(withdrawalAmount===""){
+                    $(".withdrawalAmount").attr("style","border:1px solid red;");
+                    $(".processing").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else if(withDrawer===""){
+                    $(".withDrawer").attr("style","border:1px solid red;");
+                    $(".processing").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else{
+                    getResponse(WithDrawalReason,withdrawalAmount,withDrawer,'withdraw');
+                }
+            }
+            function deposit(){
+                let DepositReason = $(".DepositReason").val();
+                let DepositAmount = $(".DepositAmount").val();
+                let Depositer = $(".Depositer").val();
+                $(".processing1").removeAttr("hidden").attr("style","color:red;border:1px solid red;background:white;").html("<div><img src='../../img/loader.gif' style='width:15%;border-radius: 20px;'> Processing...</div>");
+                if(DepositReason===""){
+                    $(".DepositReason").attr("style","border:1px solid red;");
+                    $(".processing1").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else if(DepositAmount===""){
+                    $(".DepositAmount").attr("style","border:1px solid red;");
+                    $(".processing1").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else if(Depositer===""){
+                    $(".Depositer").attr("style","border:1px solid red;");
+                    $(".processing1").attr("style","border:1px solid red;color:red;").html("Missing Field!");
+                }
+                else{
+                    getResponse(DepositReason,DepositAmount,Depositer,'deposit');
+                }
+            }
+            function getResponse(transactReason,transactAmount,transactPerson,transactType){
+                const url="../../routes/adminRequests.php";
+                let processing = (transactType==='deposit')?".processing1":".processing";
+                $.ajax({
+                    url:url,
+                    type:'post',
+                    data:{transactReason:transactReason,transactAmount:transactAmount,transactPerson:transactPerson,transactType:transactType},
+                    beforeSend:function(){
+                        $(processing).html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
+                    },
+                    success:function(e){
+                        if(e.length==1){
+                            $(processing).attr("style","padding:10px 10px;width:100%;color:green;").html(transactType+" success");
+                            if(transactType==='deposit'){
+                                $(".DepositReason").val('');
+                                $(".DepositAmount").val('');
+                                $(".Depositer").val('');
+                                //loadAfterQuery(".classCallerDeposit","../../src/forms/admin/transactionHistory.php?query=deposit");
+                            }
+                            else{
+                                $(".WithDrawalReason").val('');
+                                $(".withdrawalAmount").val('');
+                                $(".withDrawer").val('');
+                                //loadAfterQuery(".classCallerwithDraw","../../src/forms/admin/transactionHistory.php?query=withdraw");
+                            }
+                            loadAfterQuery(".makhanyile","../../src/forms/admin/financialStatement.php")
+                        }
+                        else{
+                            $(processing).attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(e);
+                        }
+                    }
+                });
+            }
+            function addNewUser(){
+                var fname = $(".fname").val();
+                var lname = $(".lname").val();
+                var userPhoneNo = $(".userPhoneNo").val();
+                var userEmailAddress = $(".userEmailAddress").val();
+                var userPassword = $(".userPassword").val();
+                var gender = $(".gender").val();
+                $(".errorAddNewUser").removeAttr("hidden").attr("style","color:red;border:1px solid red;background:white;").html("<div><img src='../../img/loader.gif' style='width:5%;border-radius: 20px;'> Processing...</div>");
+                if(fname ===""){
+                    $(".fname").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(lname ===""){
+                    $(".lname").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(userPhoneNo ===""){
+                    $(".userPhoneNo").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(userEmailAddress ===""){
+                    $(".userEmailAddress").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(userPassword ===""){
+                    $(".userPassword").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else if(gender ===""){
+                    $(".gender").attr("style","border:1px solid red;");
+                    $(".errorAddNewUser").attr("style","color:red;border:1px solid red;padding:5px;text-align:left;").html("field required*");
+                }
+                else{
+                    fname = fname+" "+lname;
+                    const url="../../routes/adminRequests.php";
+                    $.ajax({
+                        url:url,
+                        type:'post',
+                        data:{fname:fname,userPhoneNo:userPhoneNo,userEmailAddress:userEmailAddress,userPassword:userPassword,gender:gender},
+                        beforeSend:function(){
+                            $(".errorAddNewUser").html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
+                        },
+                        success:function(e){
+                            if(e.length==1){
+                                $(".errorAddNewUser").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("New User added!!");
+                            }
+                            else{
+                                $(".errorAddNewUser").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(e);
+                            }
+                        }
+                    });
+                }
             }
             function addNewProduct(){
                 const fileAddProduct = document.getElementById('fileAddProduct').files;
@@ -841,7 +930,7 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                         
                         // form_data.append("filesUpload",1);
                         const url="../../routes/adminRequests.php";
-                        $(".processing").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("<img style='width:10%;' src='../img/loader.gif'><h5 style='color:green;'>Processing Request..</h5>");
+                        $(".processing").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("<img style='width:10%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Request..</h5>");
                         $.ajax({
                             url:url,
                             processData: false,
@@ -949,13 +1038,112 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
             //     });
             //     $("#smallModal").modal("show");
             // }
+            function creditRequestAmount(maxAmount,clientUserId){
+                let requestAmount=parseFloat($(".creditRequestAmount").val());
+                if(requestAmount>0 && requestAmount>maxAmount){
+                    $(".responseError").removeAttr('hidden').attr("style","color:red;").html("Cannot exceed available amount : "+maxAmount);
+                    $("#badgeDome").removeClass("badge-primary").addClass("badge-secondary").attr("disabled","true").removeAttr("onclick");
+                }
+                else{
+                    if(requestAmount>0){
+                        const tax = parseFloat(requestAmount*0.15);
+                        const interest= parseFloat(requestAmount*0.30);
+                        const systemFee = parseFloat(5.00);
+                        const rr=(requestAmount+tax+interest+systemFee).toFixed(2);
+                        $(".responseError").removeAttr('hidden').attr("style","color:green;").html("Payable Amount: R"+ rr+" Tax : R"+(requestAmount*0.15)+" Intertest : R"+requestAmount*0.30+" Fee: R"+systemFee);
+                        $("#badgeDome").removeClass("badge-secondary").addClass("badge-primary").removeAttr("disabled").attr("onclick","sendCreditRequest("+maxAmount+","+clientUserId+")");
+                    }   
+                }
+            }
+            function creditPaymentRequestAmount(payableAmount,clientUserId){
+                let creditPaymentRequestAmount=parseFloat($(".creditPaymentRequestAmount").val());
+                if(creditPaymentRequestAmount>0 && creditPaymentRequestAmount>payableAmount){
+                    $(".repaymentResponseError").removeAttr('hidden').attr("style","color:red;").html("Cannot exceed available amount : "+payableAmount);
+                    $("#sendCreditPaymentRequest").removeClass("badge-primary").addClass("badge-secondary").attr("disabled","true").removeAttr("onclick");
+                }
+                else{
+                    if(creditPaymentRequestAmount>0){
+                        
+                        const rr=(payableAmount-creditPaymentRequestAmount).toFixed(2);
+                        if(rr<0){
+                            $(".repaymentResponseError").removeAttr('hidden').attr("style","color:red;").html("Cannot exceed Payable amount: R"+payableAmount);
+                            $("#sendCreditPaymentRequest").removeClass("badge-primary").addClass("badge-secondary").attr("disabled","true").removeAttr("onclick");
+                        }
+                        else{
+                            $(".repaymentResponseError").removeAttr('hidden').attr("style","color:green;").html("Payable amount left: R"+rr);
+                            $("#sendCreditPaymentRequest").removeClass("badge-secondary").addClass("badge-primary").removeAttr("disabled").attr("onclick","sendCreditPaymentRequest("+payableAmount+","+clientUserId+")");
+                        }
+                    }   
+                }
+            }
+            function sendCreditPaymentRequest(re_payment_payableAmount,re_payment_clientUserId){
+                const re_payment_Payment=$(".creditPaymentRequestAmount").val();
+                if(re_payment_Payment=="" || re_payment_Payment<0){
+                    $(".repaymentResponseError").removeAttr('hidden').attr("style","color:red;").html("Field required to be > 0");
+                }
+                else if(re_payment_Payment>re_payment_payableAmount){
+                    $(".responseError").removeAttr('hidden').attr("style","color:red;").html("Field Must be < "+re_payment_payableAmount);
+                }
+                else{
+                    const url="../../routes/adminRequests.php";
+                    $(".repaymentResponseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("<img style='width:10%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Request..</h5>");
+                    $.ajax({
+                        url:url,
+                        type:'post',
+                        data:{'re_payment_payableAmount':re_payment_payableAmount,'re_payment_clientUserId':re_payment_clientUserId,'re_payment_Payment':re_payment_Payment},
+                        beforeSend:function(){
+                            $(".repaymentResponseError").html("<img style='width:10%;' src='../../img/loader.gif'><h5 style='color:green;'>Fetching Data..</h5>");
+                        },
+                        success:function(e){
+                            if(e.length===1){
+                                $(".repaymentResponseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Request Successful");
+                                openUserOnCredit(re_payment_clientUserId);
+                            }
+                            else{
+                                $(".repaymentResponseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html(e);
+                            }
+                        }
+                    });
+                }
+            }
+            function sendCreditRequest(maxAmount,clientUserId){
+                const requestAmount=$(".creditRequestAmount").val();
+                if(requestAmount==""||requestAmount<1){
+                    $(".responseError").removeAttr('hidden').attr("style","color:red;").html("Field required to be > 0");
+                }
+                else if(requestAmount>maxAmount){
+                    $(".responseError").removeAttr('hidden').attr("style","color:red;").html("Field Must be < "+maxAmount);
+                }
+                else{
+                    const url="../../routes/adminRequests.php";
+                    $(".responseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("<img style='width:10%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Request..</h5>");
+                    $.ajax({
+                        url:url,
+                        type:'post',
+                        data:{'requestAmount':requestAmount,'maxAmount':maxAmount,'clientUserId':clientUserId},
+                        beforeSend:function(){
+                            $(".responseError").html("<img style='width:10%;' src='../../img/loader.gif'><h5 style='color:green;'>Fetching Data..</h5>");
+                        },
+                        success:function(e){
+                            if(e.length===1){
+                                $(".responseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Request Successful");
+                                openUserOnCredit(clientUserId);
+
+                            }
+                            else{
+                                $(".responseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html(e);
+                            }
+                        }
+                    });
+                }
+            }
             function domeSquareModal(filename,request){
                 $.ajax({
                     url:'../../src/forms/admin/'+filename+'.php',
                     type:'post',
                     data:{'request':request},
                     beforeSend:function(){
-                        $(".showlargeModal").html("<img style='width:10%;' src='../img/loader.gif'><h5 style='color:green;'>Fetching Data..</h5>");
+                        $(".showlargeModal").html("<img style='width:10%;' src='../../img/loader.gif'><h5 style='color:green;'>Fetching Data..</h5>");
                     },
                     success:function(e){
                         // console.log(e);
