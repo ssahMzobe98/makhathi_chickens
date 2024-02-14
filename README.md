@@ -1,2 +1,2 @@
 # makhathi_chickens
-App-Backend Project founded by Mr MS Mzobe the founder of MMS HIGH TECH
+APP Backend project to process chicken sales, chicken meet, eggs, cow meet, etc
