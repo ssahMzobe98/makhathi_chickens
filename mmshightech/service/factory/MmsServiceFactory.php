@@ -5,11 +5,13 @@ namespace Mmshightech\service\factory;
 use Mmshightech\interfaceLet\IMailService;
 use Mmshightech\mmshightech;
 use Src\constants\ServiceConstants;
+use Classes\response\Response;
 
 class MmsServiceFactory
 {
     protected static $data = [
-        ServiceConstants::MMSHIGHTECH => mmshightech::class
+        ServiceConstants::MMSHIGHTECH => mmshightech::class,
+        ServiceConstants::RESPONSE=>Response::class
     ];
     public static function make(string $MMSHIGHTECH, array $array)
     {

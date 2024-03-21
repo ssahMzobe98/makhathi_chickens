@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\Authenticate;
+use Src\constants\StatusConstants;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +13,17 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+return [
+    Request::HTTP_GET => [
+        /** TODO */
+    ],
+    Request::HTTP_POST => [
+        
+        'user/login' => function () {
+            $auth = DataGeneratorFactory::make(ServiceConstants::API_AUTH,[]);
+            return $auth->APILoginRequest();
+        }
+    ]
+];
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+

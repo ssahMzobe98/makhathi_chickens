@@ -33,35 +33,39 @@ class transactionDao extends CleanData
             $response->failureSetter()->messagerSetter("Cannot Make payment. Client has no debt/credits.")->setObjectReturn();
             return $response;
         }
-        $amountPaidForHistory=$re_payment_Payment;
-        $amountOnCredit = $this->dataGenerator->getAmountOnCredit($re_payment_clientUserId);
-        $amountDueByClientWithoutInterest = $amountOnCredit['amount']??0;
-        $amountWithInterestDueByClient = $amountOnCredit['amount_with_interest']??0;
-        $repayment_amount_by_client = $amountOnCredit['repayment_amount']??0;
-        if($amountWithInterestDueByClient==0 || $amountWithInterestDueByClient<0){
-            $response->failureSetter()->messagerSetter("Cannot Make payment. Client has no debt/credits: ({$amountWithInterestDueByClient})")->setObjectReturn();
-            return $response;
-        }
-        $remaining_Amount=$amountWithInterestDueByClient-($repayment_amount_by_client+$re_payment_Payment);
-        if($remaining_Amount<0){
-            $response->failureSetter()->messagerSetter("Remaining Amount R{$amountWithInterestDueByClient} - {$re_payment_payableAmount} is < 0,There For cannot process this request")->setObjectReturn();
-            return $response;
-        }
-        $re_payment_Payment+=$repayment_amount_by_client;
-        $sql="update credits_users set repayment_amount=? ,actioned_on=NOW() where user_id=?";
-        $params = [$re_payment_Payment,$re_payment_clientUserId];
-        if($remaining_Amount==0 || $remaining_Amount<0){
-            $sql="update credits_users set repayment_amount=?, payment_status='CLOSED' ,actioned_on=NOW() where user_id=?";
-        }
-        $response=$this->connect->postDataSafely($sql,'ss',$params);
-        if($response->responseStatus===Flags::FAILED_STATUS){
-            return $response;
-        }
-        $response = $this->addToCreditTransactionHistory([],$amountPaidForHistory,$re_payment_clientUserId,$systemUserId,'Payment');
-        if($response->responseStatus===Flags::FAILED_STATUS){
-            $this->connect->rollBack();
-            return $response;
-        }
+        // try{
+            $amountPaidForHistory=$re_payment_Payment;
+            $amountOnCredit = $this->dataGenerator->getAmountOnCredit($re_payment_clientUserId);
+            $amountDueByClientWithoutInterest = $amountOnCredit['amount']??0;
+            $amountWithInterestDueByClient = $amountOnCredit['amount_with_interest']??0;
+            $repayment_amount_by_client = $amountOnCredit['repayment_amount']??0;
+            if($amountWithInterestDueByClient==0 || $amountWithInterestDueByClient<0){
+                $response->failureSetter()->messagerSetter("Cannot Make payment. Client has no debt/credits: ({$amountWithInterestDueByClient})")->setObjectReturn();
+                return $response;
+            }
+            $remaining_Amount=$amountWithInterestDueByClient-($repayment_amount_by_client+$re_payment_Payment);
+            if($remaining_Amount<0){
+                $response->failureSetter()->messagerSetter("Remaining Amount R{$amountWithInterestDueByClient} - {$re_payment_payableAmount} is < 0,There For cannot process this request")->setObjectReturn();
+                return $response;
+            }
+            $re_payment_Payment+=$repayment_amount_by_client;
+            $sql="update credits_users set repayment_amount=? ,actioned_on=NOW() where user_id=?";
+            $params = [$re_payment_Payment,$re_payment_clientUserId];
+            if($remaining_Amount==0 || $remaining_Amount<0){
+                $sql="update credits_users set repayment_amount=?, payment_status='CLOSED' ,actioned_on=NOW() where user_id=?";
+            }
+            $response=$this->connect->postDataSafely($sql,'ss',$params);
+            if($response->responseStatus===Flags::FAILED_STATUS){
+                return $response;
+            }
+            $response = $this->addToCreditTransactionHistory([],$amountPaidForHistory,$re_payment_clientUserId,$systemUserId,'Payment');
+            if($response->responseStatus===Flags::FAILED_STATUS){
+                $this->connect->rollBack();
+                return $response;
+            }
+        // }catch(\Exception $e){
+        //     WriteResponseLog::logResponse(ExceptionHelper::parseToStr($e),)
+        // }
         return $response;
     }
     private function updateCreditAmount($interestArrayData,$requestAmount,$clientUserId,$actioned_by):Response{
