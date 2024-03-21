@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\Authenticate;
 use Src\constants\StatusConstants;
+use App\Http\HTTPConstants\HTTPConstants;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +15,10 @@ use Src\constants\StatusConstants;
 |
 */
 return [
-    Request::HTTP_GET => [
+    HTTPConstants::HTTP_GET => [
         /** TODO */
     ],
-    Request::HTTP_POST => [
+    HTTPConstants::HTTP_POST => [
         
         'user/login' => function () {
             $auth = DataGeneratorFactory::make(ServiceConstants::API_AUTH,[]);

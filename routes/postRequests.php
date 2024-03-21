@@ -1,9 +1,13 @@
 <?php
 include "../vendor/autoload.php";
 $e="UNKNOWN REQUEST!!";
-use Classes\LoginProcessor;
+
 use Src\constants\StatusConstants;
-$login=new LoginProcessor(null);
+use Src\constants\ServiceConstants;
+use Mmshightech\service\factory\DataGeneratorFactory;
+
+// $login=new LoginProcessor(null);
+$login = DataGeneratorFactory::make(ServiceConstants::WEB_AUTH,[null]);
 if(isset($_POST['emailLogin'],$_POST['passLogin'],$_POST['dash'])){
     $emailLogin=$login->cleanDataSet($_POST['emailLogin']);
     $passLogin=$login->cleanDataSet($_POST['passLogin']);

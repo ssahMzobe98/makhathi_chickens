@@ -20,14 +20,14 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="E-Learning for all SGELA is an app engineered to simplify all tertiary & bursary applications and easily accessible.">
-    <meta name="keywords" content=" MMS HIGH TECH | <?php echo $cur_user_row['name_surname'];?> | E-Learning for all">
+    <meta name="keywords" content=" MAKHATHI CHICKENS | <?php echo $cur_user_row['name_surname'];?> | E-Learning for all">
     <meta name="author" content="Mr M.S Mzobe">
-    <link rel='dns-prefetch' href='https://netchatsa.com/app//s0.wp.com' />
-    <link rel='dns-prefetch' href='https://netchatsa.com/app/'/>
-    <link rel='dns-prefetch' href='https://netchatsa.com/app//fonts.googleapis.com' />
-    <link rel='dns-prefetch' href='https://netchatsa.com/app//s.w.org' />
-    <link rel="alternate" type="application/rss+xml" title="E-Learning for all &raquo; Feed" href="https://netchatsa.com/app/feed/" />
-    <link rel="alternate" type="application/rss+xml" title="E-Learning for all &raquo; Comments Feed" href="https://netchatsa.com/app/feed/" />
+    <link rel='dns-prefetch' href='https://makhathichickens.co.za/app//s0.wp.com' />
+    <link rel='dns-prefetch' href='https://makhathichickens.co.za/app/'/>
+    <link rel='dns-prefetch' href='https://makhathichickens.co.za/app//fonts.googleapis.com' />
+    <link rel='dns-prefetch' href='https://makhathichickens.co.za/app//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="E-Learning for all &raquo; Feed" href="https://makhathichickens.co.za/app/feed/" />
+    <link rel="alternate" type="application/rss+xml" title="E-Learning for all &raquo; Comments Feed" href="https://makhathichickens.co.za/app/feed/" />
     <meta property="og:title" content="MMS HIGH TECH | "/>
     <meta property="og:description" content="MMS HIGH TECH | "/>
 
@@ -64,6 +64,10 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
         margin: 0;
         padding: 0;
         font-family: 'poppins', sans-serif;
+        width:100%;
+    }
+    body{
+        width:100%;
     }
     section{
         justify-content: center;
@@ -81,7 +85,7 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
     }
     section .bodyTag{
         width:100%;
-        height: 81.9%;
+        height: 81%;
         overflow-y: scroll;
         overflow-wrap: break-word;
         word-wrap: break-word;
@@ -127,6 +131,7 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
     .headerMet{
         background:#0d0230 center;
         padding: 10px 10px;
+        width:100%;
     }
     .headerMet .subTexted{
         width:100%;
