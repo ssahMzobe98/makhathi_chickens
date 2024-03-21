@@ -5,10 +5,12 @@ use Classes\generator\DataGenerator;
 use Src\constants\ServiceConstants;
 use Mmshightech\mmshightech;
 use App\Http\Middleware\Authenticate;
+use Classes\LoginProcessor;
 class DataGeneratorFactory{
 	protected static array $data=[
 			ServiceConstants::GENERATE_DATA => DataGenerator::class,
-			ServiceConstants::API_AUTH => Authenticate::class
+			ServiceConstants::API_AUTH => Authenticate::class,
+			ServiceConstants::WEB_AUTH=>LoginProcessor::class
 
 	];
 	public static function make(string $tagertClass,array $array){

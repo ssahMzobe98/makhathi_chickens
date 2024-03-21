@@ -26,6 +26,12 @@ class LoginProcessor extends CleanData
     }
     public function createNewUserFromApp(string $email="", string $pass="", string $name="", string $phone="",string $user_type='app'):Response
     {
+        try{
+
+        }
+        catch(\Exception $e){
+            WriteResponseLog::logResponse(ExceptionHelper::parseToStr($e),)
+        }
         $response = $this->isAccountEmailSet($email);
         if($response->responseStatus!==StatusConstants::SUCCESS_STATUS){
             return $response;
@@ -94,10 +100,9 @@ class LoginProcessor extends CleanData
         if($results->responseStatus==StatusConstants::FAILED_STATUS){
             return $results;
         }
-        $mail = $this->mailServiceConnector();
         $mailObject=(object)[
             "to"=>$email,
-            "from"=>"noreply@mmshightech.com",
+            "from"=>"noreply@makhathichickens.com",
             "message"=>"<p>Thank you for joining Thousands of our healthy customers. To be able to proceed to your account and start shopping now, Please find the attached verification code.</p>
                         <p>This code is yours!. Please use it withing 30 minutes from received time. You can only use this once. </p>
                         <p><span style='color:white;font-family: Arial,serif;font-size: smaller;font-weight: bolder;'>CODE : $code</span></p>
@@ -106,6 +111,11 @@ class LoginProcessor extends CleanData
             "header"=>"header",
             "subject"=>"subject"
         ];
-        return $mail->sendMail($mailObject);
+        return $this->mailservice->setSMTPSettings(StatusConstants::MAIL_HOST, StatusConstants::DEFAULT_SYSTEM_SENDER, StatusConstants::MAILER_PASS, 465,PHPMailer::ENCRYPTION_SMTPS)
+                        ->setSender(StatusConstants::DEFAULT_SYSTEM_SENDER,StatusConstants::DEFAULT_SYSTEM_SENDER_NAME)
+                        ->addRecipient($mailObject->email,'')
+                        ->setSubject($mailObject->subject)
+                        ->setBody($mailObject->message)
+                        ->send();
     }
 }

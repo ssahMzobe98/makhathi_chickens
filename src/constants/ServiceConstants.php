@@ -9,4 +9,5 @@ class ServiceConstants
     public const GENERATE_DATA = "generateData";
     public const API_AUTH ="Authenticate";
     public const RESPONSE = "Response";
+    public const WEB_AUTH='LoginProcessor';
 }
