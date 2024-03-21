@@ -4,14 +4,18 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
+use Classes\traits\DBConnectTrait;
+use Classes\response\Response;
+use Src\constants\Flags;
 
 class Authenticate extends Middleware
 {
-    /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     */
-    protected function redirectTo(Request $request): ?string
-    {
-        return $request->expectsJson() ? null : route('login');
+    use DBConnectTrait;
+    public function APILoginRequest():Response{
+        /** TODO */
+        $this->Response->responseStatus=Flags::FAILED_STATUS;
+        $this->Response->responseMessage="No Messge";
+        return $this->Response;
     }
+    
 }

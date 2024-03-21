@@ -16,22 +16,22 @@ include_once "vendor/autoload.php";
          <meta charset="UTF-8">
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <meta name="description" content="Welcome to MaKhathi Chickens, The only place to find healthy and affordable chickens and eggs.(::By MMS HIGH TECH, Mr MS Mzobe) .&amp; Backups">
-         <link rel="canonical" href="https://netchatsa.com/makhathichickens/"/>
+         <link rel="canonical" href="https://makhathichickens.co.za/"/>
          <meta name="keywords" content="MAKHATHI CHICKENS, AFFORDABLE CHICKENS, AFFORDABLE EGGS, AFFORDABLE GROCERIES">
          <meta name="author" content="Mr M.S Mzobe,MMS HIGH TECH,netchatsa">
-         <link rel='dns-prefetch' href='https://netchatsa.com/makhathichickens//s0.wp.com' />
-         <link rel='dns-prefetch' href='https://netchatsa.com/makhathichickens/'/>
+         <link rel='dns-prefetch' href='https://makhathichickens.co.za//s0.wp.com' />
+         <link rel='dns-prefetch' href='https://makhathichickens.co.za/'/>
          <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
-         <link rel='dns-prefetch' href='https://netchatsa.com/makhathichickens//s.w.org' />
-         <link rel="alternate" type="application/rss+xml" title="The best edu-technology intergration  &raquo; Feed" href="https://netchatsa.com/makhathichickens/feed/" />
-         <link rel="alternate" type="application/rss+xml" title="The best edu-technology intergration &raquo; Comments Feed" href="https://netchatsa.com/makhathichickens/feed/" />
-         <meta property="og:title" content="netchatsa : Bringing quality education to your hands |(::By mms enterprise)|"/>
+         <link rel='dns-prefetch' href='https://makhathichickens.co.za//s.w.org' />
+         <link rel="alternate" type="application/rss+xml" title="The best edu-technology intergration  &raquo; Feed" href="https://makhathichickens.co.za/feed/" />
+         <link rel="alternate" type="application/rss+xml" title="The best edu-technology intergration &raquo; Comments Feed" href="https://makhathichickens/feed/" />
+         <meta property="og:title" content="MAKHATHI CHICKENS : Bringing quality education to your hands |(::By mms enterprise)|"/>
          <meta property="og:description" content="Welcome to MaKhathi Chickens, The only place to find healthy and affordable chickens and eggs.(::By MMS HIGH TECH, Mr MS Mzobe). &amp; Backups"/>
-         <meta property="og:.url" content="https://netchatsa.com/makhathichickens/"/>
+         <meta property="og:.url" content="https://makhathichickens.co.za/"/>
          <meta property="og:site_name" content="Netchatsa :: The best Edu technology" />
 
          <link rel="icon" href="img/loginDisplay-removebg-preview.png">
-         <title>netchatsa</title>
+         <title>MAKHATHI CHICKENS</title>
 
          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
