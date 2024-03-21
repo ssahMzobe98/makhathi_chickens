@@ -1,2 +1,3 @@
 # makhathi_chickens
-Personal Favor project
+Still in progress
+
