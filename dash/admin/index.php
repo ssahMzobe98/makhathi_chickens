@@ -22,12 +22,12 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
     <meta name="description" content="E-Learning for all SGELA is an app engineered to simplify all tertiary & bursary applications and easily accessible.">
     <meta name="keywords" content=" MMS HIGH TECH | <?php echo $cur_user_row['name_surname'];?> | E-Learning for all">
     <meta name="author" content="Mr M.S Mzobe">
-    <link rel='dns-prefetch' href='https://netchatsa.com/dash/admin//s0.wp.com' />
-    <link rel='dns-prefetch' href='https://netchatsa.com/dash/admin'/>
-    <link rel='dns-prefetch' href='https://netchatsa.com/dash/admin//fonts.googleapis.com' />
-    <link rel='dns-prefetch' href='https://netchatsa.com/dash/admin//s.w.org' />
-    <link rel="alternate" type="application/rss+xml" title="E-Learning for all &raquo; Feed" href="https://netchatsa.com/dash/admin/feed/" />
-    <link rel="alternate" type="application/rss+xml" title="E-Learning for all &raquo; Comments Feed" href="https://netchatsa.com/dash/admin/feed/" />
+    <link rel='dns-prefetch' href='https://makhathichickens.co.za/dash/admin//s0.wp.com' />
+    <link rel='dns-prefetch' href='https://makhathichickens.co.za/dash/admin'/>
+    <link rel='dns-prefetch' href='https://makhathichickens.co.za/dash/admin//fonts.googleapis.com' />
+    <link rel='dns-prefetch' href='https://makhathichickens.co.za/dash/admin//s.w.org' />
+    <link rel="alternate" type="application/rss+xml" title="E-Learning for all &raquo; Feed" href="https://makhathichickens.co.za/dash/admin/feed/" />
+    <link rel="alternate" type="application/rss+xml" title="E-Learning for all &raquo; Comments Feed" href="https://makhathichickens.co.za/dash/admin/feed/" />
     <meta property="og:title" content="MMS HIGH TECH | "/>
     <meta property="og:description" content="MMS HIGH TECH | "/>
 
@@ -569,7 +569,7 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                     </a>
                 </li>
                 <li>
-                    <a onclick='loadAfterQuery(".makhanyile","../model/manageProduct.php")'>
+                    <a onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/manageProduct.php")'>
                         <i class='bx bx-pie-chart-alt-2' ></i>
                         <span class="links_name">Manage Products</span>
                     </a>
@@ -597,7 +597,7 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                 <li class="log_out">
                     <a onclick="logout()">
                         <i class='bx bx-log-out'></i>
-                        <span class="links_name">Log out</span>
+                        <span class="links_name logoutSet">Log out</span>
                     </a>
                 </li>
             </ul>
@@ -737,6 +737,27 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
             function openUserOnCredit(userId){
                 domeSquareModal("userCreditDetails",userId)
             }
+            function removeProduct(removeProductUid){
+                const url="../../routes/adminRequests.php";
+                $.ajax({
+                    url:url,
+                    type:'post',
+                    data:{removeProductUid:removeProductUid},
+                    beforeSend:function(){
+                        $(".removeLog"+removeProductUid).html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
+                    },
+                    success:function(e){
+                        response = JSON.parse(e);
+                        if(response['responseStatus']==='S'){
+                            $(".removeLog"+removeProductUid).removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Removed!");
+                            $(".removeLogRow"+removeProductUid).attr("hidden",'true');
+                        }
+                        else{
+                            $(".removeLog"+removeProductUid).removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(response['responseMessage']);
+                        }
+                    }
+                });
+            }
             function widthdraw(){
                 let WithDrawalReason = $(".WithDrawalReason").val();
                 let withdrawalAmount = $(".withdrawalAmount").val();
@@ -790,7 +811,8 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                         $(processing).html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
                     },
                     success:function(e){
-                        if(e.length==1){
+                        response = JSON.parse(e);
+                        if(response['responseStatus']==='S'){
                             $(processing).attr("style","padding:10px 10px;width:100%;color:green;").html(transactType+" success");
                             if(transactType==='deposit'){
                                 $(".DepositReason").val('');
@@ -807,7 +829,7 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                             loadAfterQuery(".makhanyile","../../src/forms/admin/financialStatement.php")
                         }
                         else{
-                            $(processing).attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(e);
+                            $(processing).attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(response['responseMessage']);
                         }
                     }
                 });
@@ -820,7 +842,7 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                     type:'post',
                     data:{logout:logout},
                     success:function(e){
-                        $('.links_name').html("Logging out....");
+                        $('.logoutSet').html("Logging out....");
                         window.location=("../");
                     }
                 });
@@ -868,11 +890,12 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                             $(".errorAddNewUser").html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
                         },
                         success:function(e){
-                            if(e.length==1){
+                            response = JSON.parse(e);
+                            if(response['responseStatus']==='S'){
                                 $(".errorAddNewUser").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("New User added!!");
                             }
                             else{
-                                $(".errorAddNewUser").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(e);
+                                $(".errorAddNewUser").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(response['responseMessage']);
                             }
                         }
                     });
@@ -953,11 +976,12 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                             cache:false,
                             enctype: 'multipart/form-data',
                             success:function(e){
-                                if(e.length===1){
+                                response = JSON.parse(e);
+                                if(response['responseStatus']==='S'){
                                     $(".processing").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Product list added!!");
                                 }
                                 else{
-                                    $(".processing").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(e);
+                                    $(".processing").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(response['responseMessage']);
                                 }
                             }
                         });
@@ -1108,12 +1132,13 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                             $(".repaymentResponseError").html("<img style='width:10%;' src='../../img/loader.gif'><h5 style='color:green;'>Fetching Data..</h5>");
                         },
                         success:function(e){
-                            if(e.length===1){
+                            response = JSON.parse(e);
+                            if(response['responseStatus']==='S'){
                                 $(".repaymentResponseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Request Successful");
                                 openUserOnCredit(re_payment_clientUserId);
                             }
                             else{
-                                $(".repaymentResponseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html(e);
+                                $(".repaymentResponseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html(response['responseMessage']);
                             }
                         }
                     });
@@ -1138,13 +1163,14 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                             $(".responseError").html("<img style='width:10%;' src='../../img/loader.gif'><h5 style='color:green;'>Fetching Data..</h5>");
                         },
                         success:function(e){
-                            if(e.length===1){
+                            response = JSON.parse(e);
+                            if(response['responseStatus']==='S'){
                                 $(".responseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Request Successful");
                                 openUserOnCredit(clientUserId);
 
                             }
                             else{
-                                $(".responseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html(e);
+                                $(".responseError").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html(response['responseMessage']);
                             }
                         }
                     });
