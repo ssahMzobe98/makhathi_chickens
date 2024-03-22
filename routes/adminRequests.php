@@ -1,7 +1,5 @@
 <?php
 include "../vendor/autoload.php";
-$e = "UNKNOWN REQUEST!!";
-use Classes\LoginProcessor;
 use Src\constants\StatusConstants;
 use Classes\dao\userDao;
 use Classes\DBConnect\DBConnect;
@@ -10,7 +8,7 @@ use Src\constants\DaoClassConstants;
 use Classes\response\Response;
 use Src\constants\Flags;
 use Classes\logs\WriteResponseLog;
-$processorCleanData=new LoginProcessor(null);
+// $=new LoginProcessor(null);
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }
@@ -20,9 +18,10 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 	$e->responseMessage = 'UNKNOWN REQUEST';
 	try{
 		/** @var  userDao $userDao */
-		$userDao = DaoFactory::make(DaoClassConstants::USER_DAO,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
-		$productDao = DaoFactory::make(DaoClassConstants::PRODUCTS,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
-		$transactionDao = DaoFactory::make(DaoClassConstants::TRANSACTION_DAO,[(new Classes\DBConnect\DBConnect(null))->getConnectionClass()]);
+		$processorCleanData = DaoFactory::make(DaoClassConstants::PROCESSOR_CLEAN_DATA,[null]);
+		$userDao = DaoFactory::make(DaoClassConstants::USER_DAO,[$processorCleanData->connect]);
+		$productDao = DaoFactory::make(DaoClassConstants::PRODUCTS,[$userDao->connect]);
+		$transactionDao = DaoFactory::make(DaoClassConstants::TRANSACTION_DAO,[$userDao->connect]);
 		
 		$cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
 		if(isset($_POST['fname'],$_POST['userPhoneNo'],$_POST['userEmailAddress'],$_POST['userPassword'],$_POST['gender'])){
@@ -34,9 +33,10 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 			$e = $userDao->createNewAdminUser($fname,$userPhoneNo,$userEmailAddress,$userPassword,$gender,$cur_user_row['id']);
 			
 		}
-		elseif(isset($_POST['removeProductUid'])){
+		elseif(isset($_POST['removeProductUid'],$_POST['statusCodeRemoval'])){
 			$removeProductUid = $processorCleanData->cleanDataSet($_POST['removeProductUid']);
-			$e = $productDao->removeProductByUid($removeProductUid);
+			$statusCodeRemoval = $processorCleanData->cleanDataSet($_POST['statusCodeRemoval']);
+			$e = $productDao->removeProductByUid($removeProductUid,$statusCodeRemoval);
 		}
 		elseif(isset($_POST['transactReason'],$_POST['transactAmount'],$_POST['transactPerson'],$_POST['transactType'])){
 			$transactReason = $processorCleanData->cleanDataSet($_POST['transactReason']);

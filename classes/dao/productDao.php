@@ -16,13 +16,13 @@ class productDao extends CleanData
 		$params = [$productTitle,$productDescription,$productSubTitle,$productProductType,$productSize,$productPrice,$productInstock,$newName,$adminId];
 		return $this->connect->postDataSafely($sql,'sssssssss',$params);
 	}
-	public function getProductDetails():array{
+	public function getProductDetails(?string $status=null):array{
 		$sql = "SELECT id,product_title,product_description,product_subtitle,type,size,price,instock from products where status=?";
-		return $this->connect->getAllDataSafely($sql,'s',[Flags::ACTIVE_STATUS])??[];
+		return $this->connect->getAllDataSafely($sql,'s',[$status])??[];
 	}
-	public function removeProductByUid(?int $removeProductUid=null):Response{
+	public function removeProductByUid(?int $removeProductUid=null,string $statusCodeRemoval=Flags::ACTIVE_STATUS):Response{
 		$sql="UPDATE products set status=? where id=?";
-		return $this->connect->postDataSafely($sql,'ss',[Flags::ACTIVE_STATUS,$removeProductUid]);
+		return $this->connect->postDataSafely($sql,'ss',[$statusCodeRemoval,$removeProductUid]);
 	}
 
 }

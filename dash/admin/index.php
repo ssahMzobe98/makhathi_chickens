@@ -70,6 +70,9 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
         font-size: small;
         font-weight: bold;
     }
+    .badge{
+        cursor: pointer;
+    }
     .sidebar{
         position: fixed;
         height: 100%;
@@ -569,7 +572,7 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                     </a>
                 </li>
                 <li>
-                    <a onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/manageProduct.php")'>
+                    <a onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/manageProduct.php?status=A")'>
                         <i class='bx bx-pie-chart-alt-2' ></i>
                         <span class="links_name">Manage Products</span>
                     </a>
@@ -737,12 +740,12 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
             function openUserOnCredit(userId){
                 domeSquareModal("userCreditDetails",userId)
             }
-            function removeProduct(removeProductUid){
+            function removeProduct(removeProductUid,statusCodeRemoval){
                 const url="../../routes/adminRequests.php";
                 $.ajax({
                     url:url,
                     type:'post',
-                    data:{removeProductUid:removeProductUid},
+                    data:{removeProductUid:removeProductUid,statusCodeRemoval:statusCodeRemoval},
                     beforeSend:function(){
                         $(".removeLog"+removeProductUid).html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
                     },
