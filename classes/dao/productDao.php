@@ -24,6 +24,15 @@ class productDao extends CleanData
 		$sql="UPDATE products set status=? where id=?";
 		return $this->connect->postDataSafely($sql,'ss',[$statusCodeRemoval,$removeProductUid]);
 	}
+	public function getThisProductDetails(?int $productId=null):array{
+		if($productId === null){
+			return [];
+		}
+		$sql="SELECT id,product_title,product_description,product_subtitle,type,size,price,instock,status from products where id=?";
+		return $this->connect->getAllDataSafely($sql,'s',[$productId])[0]??[];
+
+
+	}
 
 }
 ?>

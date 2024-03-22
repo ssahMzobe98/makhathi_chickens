@@ -267,9 +267,9 @@ include_once "vendor/autoload.php";
                         type:'post',
                         data:{verification_Code:verification_Code,emailAddress:emailAddress},
                         success:function(e){
-                            e.replace(/^"(.+)"$/,' ');
-                            if(e.length>1){
-                                $(".processing").attr("style","padding:5px 5px;color:red;").html(e);
+                            response = JSON.parse(e);
+                            if(response['responseStatus']!=='S'){
+                                $(".processing").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
                             }
                             else{
                                 $(".processing").attr("style","padding:5px 5px;color:green;").html("Verification Success..");
@@ -302,9 +302,9 @@ include_once "vendor/autoload.php";
                         type:'post',
                         data:{emailLogin:emailLogin,passLogin:passLogin,dash:dash},
                         success:function(e){
-                            e.replace(/^"(.+)"$/,'');
-                            if(e.length>1){
-                                $(".processing").attr("style","padding:5px 5px;color:red;").html(e);
+                            response = JSON.parse(e);
+                            if(response['responseStatus']!=='S'){
+                                $(".processing").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
                             }
                             else{
                                 $(".processing").attr("style","padding:5px 5px;color:green;").html("Logging into to your account..");
@@ -346,9 +346,9 @@ include_once "vendor/autoload.php";
                         type:'post',
                         data:{email:email,pass:pass,name:name,phone:phone},
                         success:function(e){
-                            e.replace(/^"(.+)"$/,'');
-                            if(e.length>1){
-                                $(".processing").attr("style","padding:5px 5px;color:red;").html(e);
+                            response = JSON.parse(e);
+                            if(response['responseStatus']!=='S'){
+                                $(".processing").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
                             }
                             else{
                                 $(".processing").attr("style","padding:5px 5px;color:green;").html("Account Created!");
