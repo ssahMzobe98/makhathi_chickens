@@ -6,6 +6,7 @@ class HTTPConstants{
 	public const HTTP_UPDATE='put';
 	public const HTTP_DELETE='delete';
 	public const HTTP_PATCH='patch';
+	public const HTTP_REQUEST = 'HTTPRequests';
 }
 
 ?>
