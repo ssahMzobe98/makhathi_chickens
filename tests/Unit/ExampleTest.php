@@ -7,7 +7,6 @@ use Src\constants\DaoClassConstants;
 
 class ExampleTest extends TestCase {
     protected $dbMock;
-    /** NEED TO TEST AND VERYFIE THAT THIS WORKS. */
     protected function setUp(): void {
         parent::setUp();
         $this->userPdo = DaoFactory::make(DaoClassConstants::USER, [null]);
