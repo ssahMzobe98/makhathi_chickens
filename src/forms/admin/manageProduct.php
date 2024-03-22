@@ -21,7 +21,7 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
         ?>
         <div style="width:100%;padding:10px 10px;display: flex;">
             <div></div>
-            Products Details | <span onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/manageProduct.php?status=D")' class="badge badge-primary text-white text-center">Suspended Products</span> | <span onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/manageProduct.php?status=S")' class="badge badge-danger text-white text-center">De-Activated Products</span>
+            Products Details | <span onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/manageProduct.php?status=S")' class="badge badge-primary text-white text-center">Suspended Products</span> | <span onclick='loadAfterQuery(".makhanyile","../../src/forms/admin/manageProduct.php?status=D")' class="badge badge-danger text-white text-center">De-Activated Products</span>
         </div>
         <div class="container" style="border-radius: 10px;border:2px solid #dddddd;">
             <table id="example" class="table table-striped" style="width:100%;border:2px solid #dddddd;border-radius: 10px;">
