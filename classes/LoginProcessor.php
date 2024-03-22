@@ -26,12 +26,12 @@ class LoginProcessor extends CleanData
     }
     public function createNewUserFromApp(string $email="", string $pass="", string $name="", string $phone="",string $user_type='app'):Response
     {
-        try{
+        // try{
 
-        }
-        catch(\Exception $e){
-            WriteResponseLog::logResponse(ExceptionHelper::parseToStr($e),)
-        }
+        // }
+        // catch(\Exception $e){
+        //     WriteResponseLog::logResponse(ExceptionHelper::parseToStr($e),)
+        // }
         $response = $this->isAccountEmailSet($email);
         if($response->responseStatus!==StatusConstants::SUCCESS_STATUS){
             return $response;

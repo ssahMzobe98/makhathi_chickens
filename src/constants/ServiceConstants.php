@@ -10,4 +10,5 @@ class ServiceConstants
     public const API_AUTH ="Authenticate";
     public const RESPONSE = "Response";
     public const WEB_AUTH='LoginProcessor';
+    public const USER = 'userDao';
 }
