@@ -16,6 +16,11 @@ class productDao extends CleanData
 		$params = [$productTitle,$productDescription,$productSubTitle,$productProductType,$productSize,$productPrice,$productInstock,$newName,$adminId];
 		return $this->connect->postDataSafely($sql,'sssssssss',$params);
 	}
+	public function updateNewProduct(?string $newName=null,?int $productId=null):Response{
+		$sql = "UPDATE products set img=? where id=?";
+		$params = [$newName,$productId];
+		return $this->connect->postDataSafely($sql,'ss',$params);
+	}
 	public function getProductDetails(?string $status=null):array{
 		$sql = "SELECT id,product_title,product_description,product_subtitle,type,size,price,instock from products where status=?";
 		return $this->connect->getAllDataSafely($sql,'s',[$status])??[];
@@ -28,9 +33,13 @@ class productDao extends CleanData
 		if($productId === null){
 			return [];
 		}
-		$sql="SELECT id,product_title,product_description,product_subtitle,type,size,price,instock,status from products where id=?";
+		$sql="SELECT id,img,product_title,product_description,product_subtitle,type,size,price,instock,status from products where id=?";
 		return $this->connect->getAllDataSafely($sql,'s',[$productId])[0]??[];
-
+	}
+	public function updateProductDetails(string|int|null $productTitleUpdate=null,string|int|null $productProductTypeUpdate=null,string|int|null $productSubTitleUpdate=null,string|int|null $productSizeUpdate=null,string|int|null $productPriceUpdate=null,string|int|null $productInstockUpdate=null,string|int|null $productDescriptionUpdate=null,?int $ProductIdUpdateDetails=null):Response{
+		$sql = "UPDATE products set product_title=?,product_description=?,product_subtitle=?,type=?,size=?,price=?,instock=? where id=?";
+		$params = [$productTitleUpdate,$productDescriptionUpdate,$productSubTitleUpdate,$productProductTypeUpdate,$productSizeUpdate,$productPriceUpdate,$productInstockUpdate,$ProductIdUpdateDetails];
+		return $this->connect->postDataSafely($sql,'ssssssss',$params);
 
 	}
 
