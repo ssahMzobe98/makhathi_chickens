@@ -850,6 +850,74 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                     }
                 });
             }
+            function UpdateProduct(ProductIdUpdateDetails){
+                $(".imgResponseRequest").removeAttr("hidden").attr("style","color:red;border:1px solid red;background:white;").html("<div><img src='../../img/loader.gif' style='width:5%;border-radius: 20px;'> Processing...</div>");
+                const productTitleUpdate = $('.productTitleUpdate').val();
+                const productProductTypeUpdate = $('.productProductTypeUpdate').val();
+                const productSubTitleUpdate = $('.productSubTitleUpdate').val();
+                const productSizeUpdate = $('.productSizeUpdate').val();
+                const productPriceUpdate = $('.productPriceUpdate').val();
+                const productInstockUpdate = $('.productInstockUpdate').val();
+                const productDescriptionUpdate = $('.productDescriptionUpdate').val();
+                if(productTitleUpdate===''){
+                    $('.productTitleUpdate').attr('style','border:1px solid red;');
+                    $('imgResponseRequest').attr('style','color:red;').html("Field required*");
+                }
+                else if(productProductTypeUpdate===''){
+                    $('.productProductTypeUpdate').attr('style','border:1px solid red;');
+                    $('imgResponseRequest').attr('style','color:red;').html("Field required*");
+                }
+                else if(productSubTitleUpdate===''){
+                    $('.productSubTitleUpdate').attr('style','border:1px solid red;');
+                    $('imgResponseRequest').attr('style','color:red;').html("Field required*");
+                }
+                else if(productSizeUpdate===''){
+                    $('.productSizeUpdate').attr('style','border:1px solid red;');
+                    $('imgResponseRequest').attr('style','color:red;').html("Field required*");
+                }
+                else if(productPriceUpdate===''){
+                    $('.productPriceUpdate').attr('style','border:1px solid red;');
+                    $('imgResponseRequest').attr('style','color:red;').html("Field required*");
+                }
+                else if(productInstockUpdate===''){
+                    $('.productInstockUpdate').attr('style','border:1px solid red;');
+                    $('imgResponseRequest').attr('style','color:red;').html("Field required*");
+                }
+                else if(productDescriptionUpdate===''){
+                    $('.productDescriptionUpdate').attr('style','border:1px solid red;');
+                    $('imgResponseRequest').attr('style','color:red;').html("Field required*");
+                }
+                else{
+                    const url="../../routes/adminRequests.php";
+                    $.ajax({
+                        url:url,
+                        type:'post',
+                        data:{productTitleUpdate:productTitleUpdate,
+                                productProductTypeUpdate:productProductTypeUpdate,
+                                productSubTitleUpdate:productSubTitleUpdate,
+                                productSizeUpdate:productSizeUpdate,
+                                productPriceUpdate:productPriceUpdate,
+                                productInstockUpdate:productInstockUpdate,
+                                productDescriptionUpdate:productDescriptionUpdate,
+                                ProductIdUpdateDetails:ProductIdUpdateDetails
+                            },
+                        beforeSend:function(){
+                            $(".imgResponseRequest").html("<img style='width:5%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Data..</h5>");
+                        },
+                        success:function(e){
+                            response = JSON.parse(e);
+                            if(response['responseStatus']==='S'){
+                                $(".imgResponseRequest").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Successfully Updated!");
+                                domeSquareModal('ProductDetails',ProductIdUpdateDetails);
+
+                            }
+                            else{
+                                $(".imgResponseRequest").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(response['responseMessage']);
+                            }
+                        }
+                    });
+                }
+            }
             function addNewUser(){
                 var fname = $(".fname").val();
                 var lname = $(".lname").val();
@@ -899,6 +967,46 @@ $cur_user_row =$userDao->getCurrentUserByEmail($_SESSION['user_agent']);
                             }
                             else{
                                 $(".errorAddNewUser").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(response['responseMessage']);
+                            }
+                        }
+                    });
+                }
+            }
+            function fileAddProductUpdate(ProductImgUpdateId){
+                $(".imgResponseRequest").removeAttr("hidden").attr("style","color:red;border:1px solid red;background:white;").html("<div><img src='../../img/loader.gif' style='width:5%;border-radius: 20px;'> Processing...</div>");
+                const fileAddProduct = document.getElementById('fileAddProductUpdate').files;
+                var form_data = new FormData();
+                terminate = false
+                for(var i=0;i<fileAddProduct.length;i++){
+                    if(fileAddProduct[i]===""){
+                        break;
+                        terminate=true;
+                    }
+                    form_data.append("imgResponseRequest",fileAddProduct[i]);
+                }
+                if(terminate){
+                    $(".imgResponseRequest").attr("style","color:red;border:1px solid red;background:white;").html("File input required.");
+                }
+                else{
+                    form_data.append("productImgUpdateId",ProductImgUpdateId);
+                    const url="../../routes/adminRequests.php";
+                    $(".imgResponseRequest").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("<img style='width:10%;' src='../../img/loader.gif'><h5 style='color:green;'>Processing Request..</h5>");
+                    $.ajax({
+                        url:url,
+                        processData: false,
+                        contentType: false,
+                        type:"POST",
+                        data:form_data,
+                        cache:false,
+                        enctype: 'multipart/form-data',
+                        success:function(e){
+                            response = JSON.parse(e);
+                            if(response['responseStatus']==='S'){
+                                $(".imgResponseRequest").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:green;").html("Product IMG updated");
+                                domeSquareModal('ProductDetails',ProductImgUpdateId);
+                            }
+                            else{
+                                $(".imgResponseRequest").removeAttr("hidden").attr("style","padding:10px 10px;width:100%;color:red;border:2px solid red;border-radius:10px;").html(response['responseMessage']);
                             }
                         }
                     });

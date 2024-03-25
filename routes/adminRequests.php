@@ -50,6 +50,17 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 			$e = $transactionDao->MakeTransaction($transactReason,$transactAmount,$transactPerson,$transactType,$cur_user_row['id']);
 			
 		}
+		elseif (isset($data['productTitleUpdate'],$data['productProductTypeUpdate'],$data['productSubTitleUpdate'],$data['productSizeUpdate'],$data['productPriceUpdate'],$data['productInstockUpdate'],$data['productDescriptionUpdate'],$data['ProductIdUpdateDetails'])) {
+			$productTitleUpdate = $processorCleanData->cleanDataSet($data['productTitleUpdate']);
+			$productProductTypeUpdate = $processorCleanData->cleanDataSet($data['productProductTypeUpdate']);
+			$productSubTitleUpdate = $processorCleanData->cleanDataSet($data['productSubTitleUpdate']);
+			$productSizeUpdate = $processorCleanData->cleanDataSet($data['productSizeUpdate']);
+			$productPriceUpdate = $processorCleanData->cleanDataSet($data['productPriceUpdate']);
+			$productInstockUpdate = $processorCleanData->cleanDataSet($data['productInstockUpdate']);
+			$productDescriptionUpdate = $processorCleanData->cleanDataSet($data['productDescriptionUpdate']);
+			$ProductIdUpdateDetails = $processorCleanData->cleanDataSet($data['ProductIdUpdateDetails']);
+			$e = $productDao->updateProductDetails($productTitleUpdate,$productProductTypeUpdate,$productSubTitleUpdate,$productSizeUpdate,$productPriceUpdate,$productInstockUpdate,$productDescriptionUpdate,$ProductIdUpdateDetails);
+		}
 		elseif(isset($data['re_payment_payableAmount'], $data['re_payment_clientUserId'], $data['re_payment_Payment'])){
 			$re_payment_payableAmount = $processorCleanData->cleanDataSet($data['re_payment_payableAmount']);
 			$re_payment_clientUserId = $processorCleanData->cleanDataSet($data['re_payment_clientUserId']);
@@ -94,6 +105,32 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 	   			$e->responseMessage = 'Thumbnail File required!';
 			}
 		}
+		elseif(isset($data['productImgUpdateId'])){
+			// echo $data['productImgUpdateId'].'nkjnkjnk';
+			$productImgUpdateId= $processorCleanData->cleanDataSet($data['productImgUpdateId']);
+			if(isset($_FILES['imgResponseRequest'])){
+				$ext = explode(".", $_FILES['imgResponseRequest']['name']);
+				if(!in_array($ext[1], ['png','PNG','JPG','jpg','heit','HEIT'])){
+					$e->responseStatus = Flags::FAILED_STATUS;
+	   				$e->responseMessage = $ext[1]." Not supported. Only png,jpg,img format supported.";
+				}
+				else{
+					$dir="../img/";
+					$newName=rand(0,1000).'_'.$ext[0].".".$ext[1];
+					if(!move_uploaded_file($_FILES['imgResponseRequest']['tmp_name'], $dir.basename($newName))){
+						$e->responseStatus = Flags::FAILED_STATUS;
+	   					$e->responseMessage = 'Failed to upload file due to network!, Please try again.';
+					}
+					else{
+						$e = $productDao->updateNewProduct($newName,$productImgUpdateId);
+					}
+				}
+			}
+			else{
+				$e->responseStatus = Flags::FAILED_STATUS;
+	   			$e->responseMessage = 'Files not found';
+			}
+		}
 		elseif(isset($data['logout'])){
 			unset($_SESSION['user_agent'],$_SESSION['var_agent']);
 			session_destroy();
@@ -107,6 +144,7 @@ if(isset($_SESSION['user_agent'],$_SESSION['var_agent'])){
 	   $e->responseMessage = $m->getMessage();
 	   WriteResponseLog::writelogResponse('../storage/logs/', $erroObject->issueType, $erroObject->class, $erroObject->method, $erroObject);
 	}
+	// print_r($_FILES);
 	echo json_encode($e);
 }
 else{
