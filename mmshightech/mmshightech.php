@@ -1,10 +1,10 @@
 <?php
 
 namespace Mmshightech;
-
+use Mmshightech\interfaceLet\IConnectionService\IConnectionService;
 use Classes\response\Response;
-
-class mmshightech
+use Src\constants\HostServiceConstants\HostServiceConstants;
+class mmshightech implements IConnectionService
 {
     public $connection;
     public function __construct()
@@ -12,10 +12,11 @@ class mmshightech
         $this->dbConn();
     }
     public function dbConn(){
-        $user='root';
-        $pass='';
-        $dbnam='makhathi_chickens';
-        $this->connection=mysqli_connect('localhost',$user,$pass,$dbnam)or die("Connection was not established!!");
+        $host=HostServiceConstants::HOST;
+        $user = HostServiceConstants::USER_NAME;
+        $pass=HostServiceConstants::USER_PASS;
+        $dbnam=HostServiceConstants::DB_NAME;
+        $this->connection=mysqli_connect($host,$user,$pass,$dbnam)or die("Connection was not established!!");
     }
     public function getAllDataSafely($query, $paramType="", $paramArray=[]):array{
         // global $conn;

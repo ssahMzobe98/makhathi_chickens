@@ -1,0 +1,16 @@
+{
+	'makhathi_chickens':{
+		'host':'localhost',
+		'port':3306
+		'user':'root'
+		'pass':''
+		'dbnam':'makhathi_chickens'
+	},
+	'credit_data':{
+		'host':'localhost',
+		'port':3306
+		'user':'root'
+		'pass':''
+		'dbnam':'credit_data'
+	}
+}

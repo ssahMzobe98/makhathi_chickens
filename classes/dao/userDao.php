@@ -97,4 +97,9 @@ class userDao extends CleanData
         $sql = "select amount,amount_with_interest,repayment_amount,payment_status from credits_users where user_id=? and payment_status='OPEN'";
         return $this->connect->getAllDataSafely($sql,'s',[$userID])[0]??[];
     }
+    public function getSystemUsers():array{
+        $slq="SELECT 
+
+        From makhathi_chickens_users as mcs ";
+    }
 }
